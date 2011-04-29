@@ -1,5 +1,8 @@
 package org.jopensignature.sign;
 
+/**
+ * Abstract resolution based geometry base class.
+ */
 public abstract class AbstractGeometry {
 
 	private final double resolution;

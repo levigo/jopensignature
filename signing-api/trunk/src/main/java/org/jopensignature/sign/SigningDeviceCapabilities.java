@@ -27,4 +27,11 @@ public abstract class SigningDeviceCapabilities {
    */
   public abstract java.awt.Dimension getDisplayPixelSize();
 
+  /**
+   * @param messageClass the {@link BaseMessage message} class to be checked.
+   * @return <code>true</code> if the {@link BaseMessage message} is supported, <code>false</code>
+   *         otherwise
+   */
+  public abstract boolean isMessageSupported(Class<? extends BaseMessage> messageClass);
+
 }

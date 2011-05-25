@@ -63,14 +63,8 @@ public interface SigningDevice {
    * @throws IllegalArgumentException if <code>message</code> is <code>null</code>.
    * @throws UnsupportedMessageException if the {@link BaseMessage message} is unsupported. Whether
    *           a {@link BaseMessage message} is supported or not, may be checked using
-   *           {@link #isMessageSupported(Class)}
+   *            {@link #getCapabilities() getCapabilities()}.{@link SigningDeviceCapabilities#isMessageSupported(Class) isMessageSupported(Class)} 
    */
   public void send(BaseMessage message) throws UnsupportedMessageException;
 
-  /**
-   * @param messageClass the {@link BaseMessage message} class to be checked.
-   * @return <code>true</code> if the {@link BaseMessage message} is supported, <code>false</code>
-   *         otherwise
-   */
-  public boolean isMessageSupported(Class<? extends BaseMessage> messageClass);
 }

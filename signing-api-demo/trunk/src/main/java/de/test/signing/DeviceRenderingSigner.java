@@ -36,7 +36,7 @@ public class DeviceRenderingSigner extends TestSigner {
     if (f.exists())
       f.delete();
     
-    if (renderer != null && f.canWrite()) {
+    if (renderer != null) {
       Rectangle rect = context.getSignatureRectangle();
 
       final double factor = deviceResolution / rect.getResolution();

@@ -1,17 +1,38 @@
 package de.test.signing;
 
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import org.jopensignature.sign.SignatureServiceProvider;
 import org.jopensignature.sign.Signer;
+import org.jopensignature.sign.SigningDevice;
 
 
 public class TestSignatureServiceProvider implements SignatureServiceProvider {
 
+  private volatile AbstractSigningDevice defaultDevice;
+  private final List<AbstractSigningDevice> signingDevices;
+  
+  public TestSignatureServiceProvider() {
+    signingDevices = new CopyOnWriteArrayList<AbstractSigningDevice>();
+    
+    // register some default devices
+    signingDevices.add(new SimpleSigningDevice());
+    signingDevices.add(defaultDevice = new RenderingSigningDevice());
+    
+  }
+  
 	public Signer createSigner() {
-		return new TestSigner();
+		return defaultDevice.createSigner();
 	}
 
-//	public Verifier createVerifier() {
-//		throw new UnsupportedOperationException("Verifier not supported right now.");
-//	}
+  public Signer createSigner(SigningDevice device) {
+    return ((AbstractSigningDevice)device).createSigner();
+  }
+
+  public SigningDevice[] getSigningDevices() {
+    return signingDevices.toArray(new SigningDevice[signingDevices.size()]);
+  }
+
 
 }

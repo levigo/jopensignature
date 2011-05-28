@@ -23,145 +23,135 @@ import org.jopensignature.sign.SignatureResult.State;
 
 public class TestSigner implements Signer {
 
-	private class SignatureEmulatorTask implements Runnable {
-		SignatureContext context;
-		SignatureListener listener;
-		boolean fail;
-		int bogusIndex;
+  private class SignatureEmulatorTask implements Runnable {
+    SignatureContext context;
+    SignatureListener listener;
+    boolean fail;
+    int bogusIndex;
 
-		public SignatureEmulatorTask(SignatureContext context,
-				SignatureListener listener, boolean fail, int imgIndex) {
-			this.context = context;
-			this.listener = listener;
-			this.fail = fail;
-			this.bogusIndex = imgIndex;
-		}
+    public SignatureEmulatorTask(SignatureContext context, SignatureListener listener, boolean fail, int imgIndex) {
+      this.context = context;
+      this.listener = listener;
+      this.fail = fail;
+      this.bogusIndex = imgIndex;
+    }
 
-		public void run() {
-			BufferedImage signBogus = signBogusImages[bogusIndex];
-			int step = 200;
-			int stepSize = Math
-					.round((1f * signBogus.getWidth()) / (1f * step));
+    public void run() {
+      BufferedImage signBogus = signBogusImages[bogusIndex];
+      int step = 200;
+      int stepSize = Math.round((1f * signBogus.getWidth()) / (1f * step));
 
-			for (int i = 1; i <= step; i++) {
-				try {
-					Thread.sleep(10);
-				} catch (InterruptedException e) {
-					// ignore
-				}
-				
-				BufferedImage img = new BufferedImage(signBogus.getWidth(), signBogus
-						.getHeight(), BufferedImage.TYPE_INT_ARGB);
-				
-				Graphics2D g = img.createGraphics();
-				int blindRegionStart = signBogus.getWidth() - (step - i) * stepSize;
-				g.setClip(new Rectangle(0,0,blindRegionStart, signBogus.getHeight()));
-				g.drawImage(signBogus, null, 0, 0);
-				g.dispose();
-				
-//				BufferedImage subimage = signBogus.getSubimage(0, 0, blindRegionStart, signBogus.getHeight());
-				listener.updateRendering(img);
-			}
-			try {
-				Thread.sleep(200);
-			} catch (InterruptedException e) {
-				// ignore
-			}
-			final SignatureResult result;
-			if (false && fail)
-				result = new SignatureResult(State.FAILED, null);
-			else
-				result = new SignatureResult(State.DONE, new SignatureData() {
+      for (int i = 1; i <= step; i++) {
+        try {
+          Thread.sleep(10);
+        } catch (InterruptedException e) {
+          // ignore
+        }
 
-					public ImageInputStream getSignedDocumentStream() {
-						// Für diese kleine Demo einfach Datenstrom zurück
-					  //fixme
-						return context.getDocumentStream();
-					}
+        BufferedImage img = new BufferedImage(signBogus.getWidth(), signBogus.getHeight(), BufferedImage.TYPE_INT_ARGB);
 
-					public BufferedImage getSignatureImage() {
-						return signBogusImages[bogusIndex];
-					}
+        Graphics2D g = img.createGraphics();
+        int blindRegionStart = signBogus.getWidth() - (step - i) * stepSize;
+        g.setClip(new Rectangle(0, 0, blindRegionStart, signBogus.getHeight()));
+        g.drawImage(signBogus, null, 0, 0);
+        g.dispose();
 
-					public Signature getSignature() {
-						// Für diese kleine Demo kein Rückgabewert.
-						return null;
-					}
-				});
-			listener.signatureFinished(result);
-		}
-	}
+        // BufferedImage subimage = signBogus.getSubimage(0, 0, blindRegionStart,
+        // signBogus.getHeight());
+        listener.updateRendering(img);
+      }
+      try {
+        Thread.sleep(200);
+      } catch (InterruptedException e) {
+        // ignore
+      }
+      final SignatureResult result;
+      if (false && fail)
+        result = new SignatureResult(State.FAILED, null);
+      else
+        result = new SignatureResult(State.DONE, new SignatureData() {
 
-	private final static BufferedImage[] signBogusImages;
-	static int index; 
-	
-	static{
-		try {
-		signBogusImages = new BufferedImage []{
-				ImageIO.read(TestSigner.class
-						.getResourceAsStream("/sig4.png")),
-				ImageIO.read(TestSigner.class
-						.getResourceAsStream("/sig3.png")),
-				ImageIO.read(TestSigner.class
-						.getResourceAsStream("/sig2.png")),
-				ImageIO.read(TestSigner.class
-						.getResourceAsStream("/sig1.png"))
-		};
-		} catch (IOException e) {
-			throw new Error("Keine Unterschriften da!",e);
-		}
-		index = (int)((Math.random() * 4)%4);
-	}
-	private Random random;
+          public ImageInputStream getSignedDocumentStream() {
+            // Für diese kleine Demo einfach Datenstrom zurück
+            // fixme
+            return context.getDocumentStream();
+          }
 
-	public TestSigner() {
-		random = new SecureRandom();
-	}
+          public BufferedImage getSignatureImage() {
+            return signBogusImages[bogusIndex];
+          }
 
-	public void close() {
-		// do nothing
-	}
+          public Signature getSignature() {
+            // Für diese kleine Demo kein Rückgabewert.
+            return null;
+          }
+        });
+      listener.signatureFinished(result);
+    }
+  }
 
-	public Dimension getPadBackgroundImageSize() {
-		return null;
-	}
+  private final static BufferedImage[] signBogusImages;
+  static int index;
 
-	public Signature[] getSignatures(ImageInputStream documentStream) {
-		if (documentStream == null)
-			throw new IllegalArgumentException(
-					"documentStream may not be null.");
-		throw new UnsupportedOperationException(
-				"This feature is not supported right now.");
-	}
+  static {
+    try {
+      signBogusImages = new BufferedImage[]{
+          ImageIO.read(TestSigner.class.getResourceAsStream("/sig4.png")),
+          ImageIO.read(TestSigner.class.getResourceAsStream("/sig3.png")),
+          ImageIO.read(TestSigner.class.getResourceAsStream("/sig2.png")),
+          ImageIO.read(TestSigner.class.getResourceAsStream("/sig1.png"))
+      };
+    } catch (IOException e) {
+      throw new Error("Keine Unterschriften da!", e);
+    }
+    index = (int) ((Math.random() * 4) % 4);
+  }
+  private Random random;
+  private final AbstractSigningDevice device;
 
-	public SigningDevice getSigningDevice() {
-		throw new UnsupportedOperationException(
-				"This feature is not supported right now.");
-	}
+  public TestSigner(AbstractSigningDevice device) {
+    this.device = device;
+    random = new SecureRandom();
+  }
 
-	public void startSigning(SignatureContext context,
-			SignatureListener listener) {
+  public void close() {
+    // do nothing
+  }
 
-		if (context == null)
-			throw new IllegalArgumentException("context may not be null.");
-		if (listener == null)
-			throw new IllegalArgumentException("listener may not be null.");
+  public Dimension getPadBackgroundImageSize() {
+    return null;
+  }
 
-		index = Math.abs((random.nextInt()))%4;
-		SignatureEmulatorTask task = new SignatureEmulatorTask(context,
-				listener, random.nextBoolean(),index);
-		new Thread(task).start();
-	}
+  public Signature[] getSignatures(ImageInputStream documentStream) {
+    if (documentStream == null)
+      throw new IllegalArgumentException("documentStream may not be null.");
+    throw new UnsupportedOperationException("This feature is not supported right now.");
+  }
 
-	public boolean isMetaInfoFieldSupported(
-			Class<? extends MetaInfoField> fieldType) {
-		// TODO Auto-generated method stub
-		return true;
-	}
+  public SigningDevice getSigningDevice() {
+    return device;
+  }
 
-	public boolean isSigningSupportedFor(ImageInputStream documentStream) {
-		// TODO Auto-generated method stub
-		return true;
-	}
+  public void startSigning(SignatureContext context, SignatureListener listener) {
+
+    if (context == null)
+      throw new IllegalArgumentException("context may not be null.");
+    if (listener == null)
+      throw new IllegalArgumentException("listener may not be null.");
+
+    index = Math.abs((random.nextInt())) % 4;
+    SignatureEmulatorTask task = new SignatureEmulatorTask(context, listener, random.nextBoolean(), index);
+    new Thread(task).start();
+  }
+
+  public boolean isMetaInfoFieldSupported(Class<? extends MetaInfoField> fieldType) {
+    // TODO Auto-generated method stub
+    return true;
+  }
+
+  public boolean isSigningSupportedFor(ImageInputStream documentStream) {
+    // TODO Auto-generated method stub
+    return true;
+  }
 
 }

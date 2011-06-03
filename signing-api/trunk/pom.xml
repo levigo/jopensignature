@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.jopensignature</groupId>
 	<artifactId>signature-api</artifactId>
-	<version>0.3</version>
+	<version>0.4-SNAPSHOT</version>
 	<name>Java Open Signature API</name>
 
 	<distributionManagement>
@@ -25,8 +25,8 @@
 	</repositories>
 
 	<scm>
-		<connection>scm:svn:https://jopensignature.googlecode.com/svn/signing-api/tags/signature-api-0.3</connection>
-		<developerConnection>scm:svn:https://jopensignature.googlecode.com/svn/signing-api/tags/signature-api-0.3</developerConnection>
+		<connection>scm:svn:https://jopensignature.googlecode.com/svn/signing-api/trunk/</connection>
+		<developerConnection>scm:svn:https://jopensignature.googlecode.com/svn/signing-api/trunk/</developerConnection>
 	</scm>
 
 	<build>

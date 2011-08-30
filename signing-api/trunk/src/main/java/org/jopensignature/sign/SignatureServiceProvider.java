@@ -1,12 +1,11 @@
 package org.jopensignature.sign;
 
 /**
- * /** This is main signing service provider interface which provides access to third party signing
+ * This is the main signing service provider interface which provides access to third party signing
  * services.
  * <p>
  * This interface has to be implemented by the specific signature solution vendors to provide access
- * to their specific customized signing service. The provided signer services have to implement the
- * {@link Signer} interface.
+ * to their specific customized signing service.
  * <p>
  * The enclosing application expects the signing realization as a JAR archive with a signature
  * service provider, which fulfills this interface and is declared as signature service provider.
@@ -67,11 +66,24 @@ public interface SignatureServiceProvider {
   public Signer createSigner();
 
   /**
-   * All to this {@link SignatureServiceProvider} accessible {@link SigningDevice}s.
+   * All to this {@link SignatureServiceProvider} accessible {@link SigningDevice signing devices}.
    * 
-   * @return all to this {@link SignatureServiceProvider} accessible {@link SigningDevice}s.
+   * @return all to this {@link SignatureServiceProvider} accessible {@link SigningDevice signing
+   *         devices}.
    */
   public SigningDevice[] getSigningDevices();
+
+  /**
+   * Find a specific a {@link SigningDevice} using a {@link SigningDevice#getIdentifier()
+   * identifier}. If no such {@link SigningDevice} could be found <code>null</code> will be
+   * returned.
+   * 
+   * @param identifier the {@link SigningDevice#getIdentifier() identifier} of a specific
+   *          {@link SigningDevice}
+   * @return the {@link SigningDevice} found for the given {@link SigningDevice#getIdentifier()
+   *         identifier} or <code>null</code> otherwise.
+   */
+  public SigningDevice findSigningDevice(String identifier);
 
   // XXX: the verification logic will be implemented in some future release.
   // Removing the logic temporarily

@@ -10,14 +10,13 @@ public interface SigningDeviceInfo {
   public String getDescription();
 
   /**
-   * Returns a unique identifier of the SigningDevice. The {@link SignatureServiceProvider}
-   * implementation has to ensure that all the {@link SigningDevice}s it returns have a unique
-   * identifier. Identifiers for {@link SigningDevice}s coming from different
-   * {@link SignatureServiceProvider}s might have overlapping identifiers.
+   * Returns a serial number for the {@link SigningDevice} or <code>null</code> if not applicable.
+   * The serial number is a vendor specific identifier for a particular device which could but
+   * doesn't have to be unique.
    * 
    * @return
    */
-  public String getIdentifier();
+  public String getSerialNumber();
 
   /**
    * Returns a UI-usable Image or <code>null</code>. This image can be used to for example to
@@ -29,6 +28,19 @@ public interface SigningDeviceInfo {
    */
   public BufferedImage getImage();
 
+  /**
+   * Returns the firmware version of the {@link SigningDevice} if applicable or <code>null</code>
+   * otherwise. The format of the version string is vendor dependent.
+   * 
+   * @return
+   */
+  public Version getFirmwareVersion();
+
+  /**
+   * Returns a name for the {@link SigningDevice} that may be used in a user interface.
+   * 
+   * @return
+   */
   public String getName();
 
   public Vendor getVendor();

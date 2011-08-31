@@ -22,7 +22,7 @@ package org.jopensignature.sign;
  * <p>
  * 
  * <pre>
- * com.open.signature.sign.SignatureServiceProvider
+ * org.jopensignature.sign.SignatureServiceProvider
  * </pre>
  * 
  * containing the line

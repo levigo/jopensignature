@@ -10,6 +10,7 @@ import org.jopensignature.sign.Signer;
 import org.jopensignature.sign.SigningDeviceCapabilities;
 import org.jopensignature.sign.SigningDeviceInfo;
 import org.jopensignature.sign.Vendor;
+import org.jopensignature.sign.Version;
 
 public class RenderingSigningDevice extends AbstractSigningDevice {
 
@@ -26,10 +27,14 @@ public class RenderingSigningDevice extends AbstractSigningDevice {
       return null;
     }
 
-    public String getIdentifier() {
-      return "CB-48-D3-09-3B-00";
+    public Version getFirmwareVersion() {
+      return null;
     }
 
+    public String getSerialNumber() {
+      return "990-6649075-9771";
+    }
+    
     public String getDescription() {
       return "A virtual testing signing device which has some simple signature templates that will be rendered automatically";
     }
@@ -63,10 +68,16 @@ public class RenderingSigningDevice extends AbstractSigningDevice {
     super(new Capabilities(), new Infos());
   }
 
+  public String getIdentifier() {
+    return "CB-48-D3-09-3B-00";
+  }
+
+
   private volatile DocumentRenderer currentRenderer;
 
   public void send(BaseMessage message) throws UnsupportedMessageException {
     if (message instanceof ApplyDocumentRenderer) {
+      System.err.println("GOT APPLY DOCUMENT RENDERER: " + ((ApplyDocumentRenderer)message).getDocumentRenderer());
       currentRenderer = ((ApplyDocumentRenderer) message).getDocumentRenderer();
     } else {
       throw new UnsupportedMessageException(message);

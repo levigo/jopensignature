@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 
 import org.jopensignature.sign.SigningDeviceInfo;
 import org.jopensignature.sign.Vendor;
+import org.jopensignature.sign.Version;
 
 public class SimpleSigningDeviceInfos implements SigningDeviceInfo {
 
@@ -13,10 +14,14 @@ public class SimpleSigningDeviceInfos implements SigningDeviceInfo {
     return "A virtual testing signing device which has some simple signature templates that will be rendered automatically";
   }
 
-  public String getIdentifier() {
-    return "1B-E8-BA-79-2F-85";
+  public Version getFirmwareVersion() {
+    return null;
   }
-
+  
+  public String getSerialNumber() {
+    return "296-5991646-0606";
+  }
+  
   public BufferedImage getImage() {
     return null;
   }

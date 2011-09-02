@@ -13,6 +13,10 @@ public class SimpleSigningDevice extends AbstractSigningDevice {
     throw new UnsupportedMessageException(message);
   }
 
+  public String getIdentifier() {
+    return "1B-E8-BA-79-2F-85";
+  }
+  
   @Override
   protected Signer createSigner() {
     return new TestSigner(this);

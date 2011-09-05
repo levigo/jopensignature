@@ -1,11 +1,17 @@
 package org.jopensignature.sign;
 
 import java.awt.image.BufferedImage;
+import java.net.URL;
 
 /**
  * Generic structure for vendor information.
  */
 public abstract class Vendor {
+  
+  /**
+   * Returns the name of the vendor. This method must never return <code>null</code>.
+   * @return the name of the vendor.
+   */
   public abstract String getName();
 
   /**
@@ -19,6 +25,15 @@ public abstract class Vendor {
    * @return
    */
   public BufferedImage getImage() {
+    return null;
+  }
+  
+  /**
+   * Returns a URL to a vendor homepage. This is optional and can be <code>null</code>.
+   * 
+   * @return a URL to a vendor homepage or <code>null</code>
+   */
+  public URL getURL() {
     return null;
   }
 }

@@ -1,8 +1,7 @@
 package org.jopensignature.sign;
 
 import java.awt.image.BufferedImage;
-import java.text.Format;
-import java.util.List;
+import java.text.SimpleDateFormat;
 
 /**
  * 

@@ -60,7 +60,7 @@ public interface DocumentRendererListener extends EventListener {
    * 
    * @param e
    */
-  void totatPageCountChanged(TotalPageCountChangedEvent e);
+  void totalPageCountChanged(TotalPageCountChangedEvent e);
 
   /**
    * Will be called if the page contents changed. Such changes include the size and the contents of

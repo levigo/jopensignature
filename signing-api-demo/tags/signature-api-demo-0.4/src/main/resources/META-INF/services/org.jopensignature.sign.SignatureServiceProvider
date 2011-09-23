@@ -1,0 +1,3 @@
+# this is the entry point for the demo.
+# We're providing one simple signature provider which does some "dummy" signing.
+de.test.signing.TestSignatureServiceProvider
